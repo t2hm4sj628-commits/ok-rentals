@@ -1,0 +1,494 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type VehicleInput = 
+ record {
+   available: bool;
+   color: text;
+   dailyRate: nat;
+   deposit: nat;
+   description: text;
+   imageUrl: text;
+   mileageLimit: nat;
+   name: text;
+   rules: vec text;
+   year: nat;
+ };
+type VehicleId = nat;
+type Vehicle = 
+ record {
+   available: bool;
+   bookedRanges: vec record {
+                       int;
+                       int;
+                     };
+   color: text;
+   dailyRate: nat;
+   deposit: nat;
+   description: text;
+   id: VehicleId;
+   imageUrl: text;
+   mileageLimit: nat;
+   name: text;
+   rules: vec text;
+   sortOrder: nat;
+   year: nat;
+ };
+type UserProfile = 
+ record {
+   createdAt: Timestamp;
+   displayName: text;
+   email: text;
+   membershipStatus: opt MembershipStatus;
+   "principal": UserId;
+ };
+type UserMembership = 
+ record {
+   endDate: Timestamp;
+   plan: MembershipPlan;
+   startDate: Timestamp;
+   status: MembershipStatus;
+   userId: UserId;
+ };
+type UserId = principal;
+type TripPhotoPhase = 
+ variant {
+   after;
+   before;
+ };
+type TripPhoto = 
+ record {
+   bookingId: text;
+   id: nat;
+   phase: TripPhotoPhase;
+   photoId: text;
+   uploadedAt: int;
+   uploaderId: principal;
+ };
+type Timestamp = int;
+type ReviewId = nat;
+type Review = 
+ record {
+   bookingId: nat;
+   comment: text;
+   id: ReviewId;
+   rating: nat;
+   reviewerId: UserId;
+   timestamp: int;
+   vehicleId: nat;
+ };
+type PlanConfigs = 
+ record {
+   annual: MembershipPlanConfig;
+   monthly: MembershipPlanConfig;
+ };
+type PaymentStatus = 
+ variant {
+   failed;
+   paid;
+   pending;
+ };
+type PaymentMethod = 
+ variant {
+   applePay;
+   creditCard;
+   crypto;
+ };
+type MessageId = nat;
+type Message = 
+ record {
+   bookingId: nat;
+   content: text;
+   id: MessageId;
+   senderId: UserId;
+   senderRole: text;
+   timestamp: int;
+ };
+type MembershipStatus = 
+ variant {
+   active;
+   cancelled;
+   expired;
+   failed;
+   pending;
+ };
+type MembershipPlanConfig = 
+ record {
+   description: text;
+   features: vec text;
+   name: text;
+   price: float64;
+ };
+type MembershipPlan = 
+ variant {
+   annual;
+   monthly;
+ };
+type IDVerificationStatus = 
+ variant {
+   approved;
+   pending;
+   rejected;
+ };
+type IDVerification = 
+ record {
+   adminNotes: text;
+   bookingId: text;
+   licensePhotoId: text;
+   reviewedAt: int;
+   ssnLast4: text;
+   status: IDVerificationStatus;
+   submittedAt: int;
+   userId: principal;
+ };
+type ErrorLogEntry = 
+ record {
+   errorType: text;
+   id: nat;
+   message: text;
+   principalId: opt text;
+   timestamp: int;
+ };
+type EmailSubscriber = 
+ record {
+   email: text;
+   subscribedAt: int;
+ };
+type ComparisonRow = 
+ record {
+   annual: bool;
+   feature: text;
+   monthly: bool;
+ };
+type CeoProfile = 
+ record {
+   description: text;
+   instagramHandle: text;
+   name: text;
+   photoUrl: text;
+   title: text;
+ };
+type BookingStatus = 
+ variant {
+   active;
+   approved;
+   cancelled;
+   completed;
+   pending;
+   returned;
+ };
+type BookingId = nat;
+type Booking = 
+ record {
+   createdAt: Timestamp;
+   cryptoTxRef: opt text;
+   damageClaimFlag: bool;
+   damageNotes: text;
+   endDate: Timestamp;
+   id: BookingId;
+   paymentMethod: PaymentMethod;
+   paymentStatus: PaymentStatus;
+   startDate: Timestamp;
+   status: BookingStatus;
+   stripeSessionId: opt text;
+   totalCost: nat;
+   userId: UserId;
+   vehicleId: VehicleId;
+ };
+type BlogPost = 
+ record {
+   author: text;
+   content: text;
+   createdAt: int;
+   excerpt: text;
+   featuredImage: text;
+   id: nat;
+   published: bool;
+   publishedDate: int;
+   slug: text;
+   title: text;
+   updatedAt: int;
+ };
+type AuditLog = 
+ record {
+   action: text;
+   id: nat;
+   performer: principal;
+   target: opt text;
+   timestamp: Timestamp;
+ };
+type AnalyticsSettings = 
+ record {
+   ga4Id: text;
+   metaPixelId: text;
+   tiktokPixelId: text;
+ };
+type AdminRole = 
+ variant {
+   manager;
+   owner;
+   support;
+   viewer;
+ };
+type AdminEntry = 
+ record {
+   assignedAt: Timestamp;
+   "principal": principal;
+   role: AdminRole;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  addAdmin: ("principal": principal) -> (variant {
+                                           err: text;
+                                           ok;
+                                         });
+  addFavorite: (vehicleId: text) -> ();
+  addTripPhoto: (bookingId: text, phase: text, photoId: text) ->
+   (variant {
+      err: text;
+      ok: TripPhoto;
+    });
+  adminAddVehicle: (data: VehicleInput) -> (variant {
+                                              err: text;
+                                              ok: Vehicle;
+                                            });
+  adminCreateBlogPost: (title: text, slug: text, author: text, excerpt: 
+   text, featuredImage: text, content: text, publishedDate: int, published:
+   bool) -> (variant {
+               err: text;
+               ok: BlogPost;
+             });
+  adminDeleteBlogPost: (id: nat) -> (bool);
+  adminDeleteVehicle: (id: VehicleId) -> (variant {
+                                            err: text;
+                                            ok;
+                                          });
+  adminGetAllBookings: () -> (vec Booking);
+  adminGetEmailSubscribers: () -> (vec EmailSubscriber);
+  adminGetPendingVerifications: () -> (vec IDVerification);
+  adminListAllBlogPosts: () -> (vec BlogPost);
+  adminListUsers: () -> (vec UserProfile);
+  adminReportDamage: (bookingId: BookingId, notes: text) ->
+   (variant {
+      err: text;
+      ok: Booking;
+    });
+  adminReviewVerification: (bookingId: text, approved: bool, notes: text) ->
+   (variant {
+      err: text;
+      ok: IDVerification;
+    });
+  adminSendPromoEmail: (subject: text, htmlBody: text) ->
+   (variant {
+      err: text;
+      ok: nat;
+    });
+  adminSetAnalyticsSettings: (settings: AnalyticsSettings) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  adminSetMembershipPricing: (monthly: float64, annual: float64) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  adminSetOpenAIKey: (key: text) -> (variant {
+                                       err: text;
+                                       ok;
+                                     });
+  adminSetSiteStats: (satisfiedClients: text, conciergeSupport: text,
+   fiveStarReviews: text) -> (variant {
+                                err: text;
+                                ok;
+                              });
+  adminSetVehiclePhoto: (id: VehicleId, imageUrl: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  adminSetVehicleSortOrders: (orders: vec record {
+                                            VehicleId;
+                                            nat;
+                                          }) -> (variant {
+                                                   err: text;
+                                                   ok;
+                                                 });
+  adminUpdateBlogPost: (id: nat, title: opt text, slug: opt text, author:
+   opt text, excerpt: opt text, featuredImage: opt text, content: opt text,
+   publishedDate: opt int, published: opt bool) ->
+   (variant {
+      err: text;
+      ok: BlogPost;
+    });
+  adminUpdateBookingStatus: (bookingId: BookingId, status: BookingStatus) ->
+   (variant {
+      err: text;
+      ok: Booking;
+    });
+  adminUpdatePolicy: (policyType: text, content: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  adminUpdateVehicle: (id: VehicleId, data: VehicleInput) ->
+   (variant {
+      err: text;
+      ok: Vehicle;
+    });
+  askChat: (message: text, sessionId: text) -> (text);
+  assignRole: ("principal": principal, role: AdminRole) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  cancelBooking: (id: BookingId) -> (bool);
+  cancelMembership: () -> (bool);
+  checkVehicleAvailability: (vehicleId: VehicleId, startDate: int, endDate:
+   int) -> (bool) query;
+  clearErrorLogs: () -> (variant {
+                           err: text;
+                           ok;
+                         });
+  createBooking: (vehicleId: nat, startDate: int, endDate: int,
+   paymentMethod: PaymentMethod) -> (variant {
+                                       err: text;
+                                       ok: Booking;
+                                     });
+  getAdminRole: ("principal": principal) -> (opt AdminRole) query;
+  getAnalytics: () ->
+   (record {
+      activeUserCount: nat;
+      bookingCountByVehicle: vec record {
+                                   text;
+                                   nat;
+                                 };
+      fleetUtilizationPercent: float64;
+      totalRevenue: float64;
+    });
+  getAnalyticsSettings: () -> (AnalyticsSettings) query;
+  getAuditLog: () -> (variant {
+                        err: text;
+                        ok: vec AuditLog;
+                      }) query;
+  getAverageRating: (vehicleId: nat) -> (nat) query;
+  getBlogPost: (slug: text) -> (opt BlogPost) query;
+  getBookingById: (id: BookingId) -> (opt Booking) query;
+  getCeoProfile: () -> (CeoProfile) query;
+  getComparisonRows: () -> (vec ComparisonRow) query;
+  getErrorLogs: () -> (variant {
+                         err: text;
+                         ok: vec ErrorLogEntry;
+                       });
+  getMembershipPricing: () ->
+   (record {
+      annual: float64;
+      monthly: float64;
+    }) query;
+  getMessages: (bookingId: nat) -> (variant {
+                                      err: text;
+                                      ok: vec Message;
+                                    });
+  getMyBookings: () -> (vec Booking) query;
+  getMyFavorites: () -> (vec text);
+  getMyMembership: () -> (opt UserMembership) query;
+  getMyProfile: () -> (opt UserProfile) query;
+  getMyReferralCode: () -> (text);
+  getPlanConfigs: () -> (PlanConfigs) query;
+  getPolicies: () ->
+   (record {
+      cancellationPolicy: text;
+      damagePolicy: text;
+      insuranceWaiverTerms: text;
+    }) query;
+  getProfile: ("principal": UserId) -> (opt UserProfile) query;
+  getReferralStats: () -> (record {
+                             code: text;
+                             referralCount: nat;
+                           });
+  getSiteStats: () ->
+   (record {
+      conciergeSupport: text;
+      eliteVehicles: nat;
+      fiveStarReviews: text;
+      satisfiedClients: text;
+    }) query;
+  getTripPhotos: (bookingId: text) -> (vec TripPhoto);
+  getVehicle: (id: VehicleId) -> (opt Vehicle) query;
+  getVehicleReviews: (vehicleId: nat) -> (vec Review) query;
+  getVehicleSortOrders: () -> (vec record {
+                                     VehicleId;
+                                     nat;
+                                   }) query;
+  isAdmin: ("principal": principal) -> (bool) query;
+  listAdminsWithRoles: () -> (vec AdminEntry) query;
+  listPublishedBlogPosts: () -> (vec BlogPost) query;
+  listVehicles: () -> (vec Vehicle) query;
+  registerProfile: (displayName: text, email: text) -> (UserProfile);
+  removeAdmin: ("principal": principal) -> (variant {
+                                              err: text;
+                                              ok;
+                                            });
+  removeFavorite: (vehicleId: text) -> ();
+  sendMessage: (bookingId: nat, content: text) ->
+   (variant {
+      err: text;
+      ok: Message;
+    });
+  setCeoProfile: (profile: CeoProfile) -> ();
+  setComparisonRows: (rows: vec ComparisonRow) -> (variant {
+                                                     err: text;
+                                                     ok;
+                                                   });
+  setPlanConfigs: (configs: PlanConfigs) -> (variant {
+                                               err: text;
+                                               ok;
+                                             });
+  submitIDVerification: (bookingId: text, licensePhotoId: text, ssnLast4:
+   text) -> (variant {
+               err: text;
+               ok: IDVerification;
+             });
+  submitReview: (vehicleId: nat, bookingId: nat, rating: nat, comment:
+   text) -> (variant {
+               err: text;
+               ok: Review;
+             });
+  subscribeMembership: (plan: MembershipPlan) ->
+   (variant {
+      err: text;
+      ok: UserMembership;
+    });
+  subscribeToEmailList: (email: text) -> (variant {
+                                            err: text;
+                                            ok;
+                                          });
+  transferOwnership: (newOwner: principal) -> (variant {
+                                                 err: text;
+                                                 ok;
+                                               });
+  updateMembershipStatus: (userId: UserId, status: MembershipStatus) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  updateProfile: (displayName: text, email: text) -> (opt UserProfile);
+}

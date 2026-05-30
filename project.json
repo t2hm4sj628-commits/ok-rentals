@@ -1,0 +1,31 @@
+{
+  "overview": "OK Rentals — a luxury car rental platform with booking, membership plans, admin dashboard, reviews, ID verification, messaging, and VIP email list.",
+  "features": [
+    "Vehicle fleet listings with photos and pricing",
+    "Date-based booking with availability blocking",
+    "ID verification with driver's license and SSN",
+    "Insurance waiver digital signature at checkout",
+    "Driver reviews and ratings on vehicles",
+    "Trip condition photos before and after rental",
+    "Booking status flow: Pending to Returned",
+    "In-app messaging between renter and admin",
+    "Damage reporting with admin notes",
+    "Policy management: cancellation, waiver, damage",
+    "Referral invite links",
+    "Wishlist and favorites",
+    "VIP email list with promotional email sending",
+    "Role-based admin dashboard",
+    "Stripe and crypto payment support",
+    "Membership plans"
+  ],
+  "category": "luxury-car-rental",
+  "tags": [
+    "car-rental",
+    "luxury",
+    "booking",
+    "membership",
+    "admin-dashboard",
+    "payments"
+  ],
+  "last_updated": "2026-05-28T02:35:02.305Z"
+}

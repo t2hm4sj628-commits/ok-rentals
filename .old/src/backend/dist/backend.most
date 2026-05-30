@@ -1,0 +1,329 @@
+// Version: 1.0.0
+type AdminEntry__901396970 =
+  {
+    assignedAt : Timestamp__301639476;
+    principal : Principal;
+    role : AdminRole__188511608
+  };
+type AdminRole__188511608 = {#manager; #owner; #support; #viewer};
+type AnalyticsSettings__532673113 =
+  {ga4Id : Text; metaPixelId : Text; tiktokPixelId : Text};
+type AuditLog__383524706 =
+  {
+    action : Text;
+    id : Nat;
+    performer : Principal;
+    target : ?Text;
+    timestamp : Timestamp__301639476
+  };
+type BlogPost__72627970 =
+  {
+    author : Text;
+    content : Text;
+    createdAt : Int;
+    excerpt : Text;
+    featuredImage : Text;
+    id : Nat;
+    published : Bool;
+    publishedDate : Int;
+    slug : Text;
+    title : Text;
+    updatedAt : Int
+  };
+type BookingId__892708521 = Nat;
+type BookingStatus__10176221 =
+  {#active; #approved; #cancelled; #completed; #pending; #returned};
+type Booking__628731632 =
+  {
+    createdAt : Timestamp__301639476;
+    cryptoTxRef : ?Text;
+    damageClaimFlag : Bool;
+    damageNotes : Text;
+    endDate : Timestamp__301639476;
+    id : BookingId__892708521;
+    paymentMethod : PaymentMethod__40431956;
+    paymentStatus : PaymentStatus__619471249;
+    startDate : Timestamp__301639476;
+    status : BookingStatus__10176221;
+    stripeSessionId : ?Text;
+    totalCost : Nat;
+    userId : UserId__158757552;
+    vehicleId : VehicleId__234076593
+  };
+type CeoProfile__545330316 =
+  {
+    description : Text;
+    instagramHandle : Text;
+    name : Text;
+    photoUrl : Text;
+    title : Text
+  };
+type CodeMap__1010077959 = Map__222667396<Principal, Text>;
+type ComparisonRow__895454967 =
+  {annual : Bool; feature : Text; monthly : Bool};
+type Data__628993992<T> = {var count : Nat__1040412405; elements : [var ?T]};
+type Data__80296667<K, V> =
+  {var count : Nat__1040412405; kvs : [var ?(K, V)]};
+type EmailSubscriber__300348995 = {email : Text; subscribedAt : Int};
+type ErrorLogEntry__1039676794 =
+  {
+    errorType : Text;
+    id : Nat;
+    message : Text;
+    principalId : ?Text;
+    timestamp : Int
+  };
+type ErrorLogEntry__597209570 = ErrorLogEntry__1039676794;
+type IDVerificationStatus__1007692039 = {#approved; #pending; #rejected};
+type IDVerification__321074905 =
+  {
+    adminNotes : Text;
+    bookingId : Text;
+    licensePhotoId : Text;
+    reviewedAt : Int;
+    ssnLast4 : Text;
+    status : IDVerificationStatus__1007692039;
+    submittedAt : Int;
+    userId : Principal
+  };
+type Int__616954475 = Int;
+type Int__837511138 = Int__616954475;
+type Internal__1007892817<T> =
+  {children : [var ?Node__918630472<T>]; data : Data__628993992<T>};
+type Internal__41346355<K, V> =
+  {children : [var ?Node__1000929467<K, V>]; data : Data__80296667<K, V>};
+type Leaf__693487502<T> = {data : Data__628993992<T>};
+type Leaf__712614010<K, V> = {data : Data__80296667<K, V>};
+type List__529703492<T> =
+  {
+    var blockIndex : Nat__1040412405;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__1040412405
+  };
+type List__560604548<T> = List__529703492<T>;
+type Map__222667396<K, V> = Map__912772452<K, V>;
+type Map__709709801<K, V> =
+  {var root : Node__1000929467<K, V>; var size : Nat__1040412405};
+type Map__912772452<K, V> = Map__709709801<K, V>;
+type MembershipPlanConfig__427963192 =
+  {description : Text; features : [Text]; name : Text; price : Float};
+type MembershipPlan__539050076 = {#annual; #monthly};
+type MembershipStatus__541310874 =
+  {#active; #cancelled; #expired; #failed; #pending};
+type MessageId__751062696 = Nat;
+type Message__1035099053 =
+  {
+    bookingId : Nat;
+    content : Text;
+    id : MessageId__751062696;
+    senderId : UserId__158757552;
+    senderRole : Text;
+    timestamp : Int
+  };
+type Nat__1040412405 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__1000929467<K, V> =
+  {#internal : Internal__41346355<K, V>; #leaf : Leaf__712614010<K, V>};
+type Node__918630472<T> =
+  {#internal : Internal__1007892817<T>; #leaf : Leaf__693487502<T>};
+type PaymentMethod__40431956 = {#applePay; #creditCard; #crypto};
+type PaymentStatus__619471249 = {#failed; #paid; #pending};
+type ReferralMap__640398446 = Map__222667396<Text, Nat>;
+type ReviewId__1068003314 = Nat;
+type Review__1059295586 =
+  {
+    bookingId : Nat;
+    comment : Text;
+    id : ReviewId__1068003314;
+    rating : Nat;
+    reviewerId : UserId__158757552;
+    timestamp : Int;
+    vehicleId : Nat
+  };
+type Time__298180599 = Int__837511138;
+type Time__688418391 = Time__298180599;
+type Timestamp__301639476 = Time__688418391;
+type TripPhotoPhase__643693190 = {#after; #before};
+type TripPhoto__399012496 =
+  {
+    bookingId : Text;
+    id : Nat;
+    phase : TripPhotoPhase__643693190;
+    photoId : Text;
+    uploadedAt : Int;
+    uploaderId : Principal
+  };
+type UserId__158757552 = Principal;
+type UserMembership__369427948 =
+  {
+    endDate : Timestamp__301639476;
+    plan : MembershipPlan__539050076;
+    startDate : Timestamp__301639476;
+    status : MembershipStatus__541310874;
+    userId : UserId__158757552
+  };
+type UserProfile__1009003526 =
+  {
+    createdAt : Timestamp__301639476;
+    displayName : Text;
+    email : Text;
+    membershipStatus : ?MembershipStatus__541310874;
+    principal : UserId__158757552
+  };
+type VehicleId__234076593 = Nat;
+type Vehicle__138210770 =
+  {
+    available : Bool;
+    bookedRanges : [(Int, Int)];
+    color : Text;
+    dailyRate : Nat;
+    deposit : Nat;
+    description : Text;
+    id : VehicleId__234076593;
+    imageUrl : Text;
+    mileageLimit : Nat;
+    name : Text;
+    rules : [Text];
+    sortOrder : Nat;
+    year : Nat
+  };
+actor {
+  stable adminState : {var controller : ?UserId__158757552};
+  stable admins :
+    {
+      var root : Node__918630472<UserId__158757552>;
+      var size : Nat__1040412405
+    };
+  stable analyticsSettingsInitialized : {var value : Bool};
+  stable analyticsSettingsState :
+    {var settings : AnalyticsSettings__532673113};
+  stable auditLog :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?AuditLog__383524706]];
+      var elementIndex : Nat__1040412405
+    };
+  stable auditState : {var nextAuditId : Nat};
+  stable blogInitialized : {var value : Bool};
+  stable blogPosts :
+    {
+      var root : Node__1000929467<Nat, BlogPost__72627970>;
+      var size : Nat__1040412405
+    };
+  stable blogState : {var nextBlogId : Nat};
+  stable bookingState : {var nextId : Nat};
+  stable bookings :
+    {
+      var root : Node__1000929467<BookingId__892708521, Booking__628731632>;
+      var size : Nat__1040412405
+    };
+  stable ceoProfileState : {var ceoProfile : CeoProfile__545330316};
+  stable comparisonRowsState : {var rows : [ComparisonRow__895454967]};
+  stable emailListState :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?EmailSubscriber__300348995]];
+      var elementIndex : Nat__1040412405
+    };
+  stable errorBuf : [var ErrorLogEntry__597209570];
+  stable errorLogState : {var count : Nat; var head : Nat; var nextId : Nat};
+  stable favorites :
+    {
+      var root : Node__1000929467<Principal, List__560604548<Text>>;
+      var size : Nat__1040412405
+    };
+  stable idVerifications :
+    {
+      var root : Node__1000929467<Text, IDVerification__321074905>;
+      var size : Nat__1040412405
+    };
+  stable initFlags :
+    {
+      var ceoProfileInitialized : Bool;
+      var comparisonRowsInitialized : Bool;
+      var planConfigsInitialized : Bool;
+      var pricingInitialized : Bool;
+      var siteStatsInitialized : Bool;
+      var vehiclePhotoOverridesInitialized : Bool;
+      var vehicleStateInitialized : Bool
+    };
+  stable memberships :
+    {
+      var root :
+        Node__1000929467<UserId__158757552, UserMembership__369427948>;
+      var size : Nat__1040412405
+    };
+  stable messageState : {var nextId : Nat};
+  stable messages :
+    {
+      var root : Node__1000929467<MessageId__751062696, Message__1035099053>;
+      var size : Nat__1040412405
+    };
+  stable openAiState : {var openAiKey : Text};
+  stable ownerPrincipal : Principal;
+  stable planConfigs :
+    {
+      var annual : MembershipPlanConfig__427963192;
+      var monthly : MembershipPlanConfig__427963192
+    };
+  stable policyInitialized : {var value : Bool};
+  stable policyState :
+    {
+      var cancellationPolicy : Text;
+      var damagePolicy : Text;
+      var insuranceWaiverTerms : Text
+    };
+  stable pricingState : {var annual : Float; var monthly : Float};
+  stable rateLimitMap :
+    {
+      var root : Node__1000929467<Text, (Nat, Int)>;
+      var size : Nat__1040412405
+    };
+  stable referralState :
+    {
+      codes : CodeMap__1010077959;
+      counts : ReferralMap__640398446;
+      var nextCode : Nat
+    };
+  stable reviewInitialized : {var value : Bool};
+  stable reviewState : {var nextId : Nat};
+  stable reviews :
+    {
+      var root : Node__1000929467<ReviewId__1068003314, Review__1059295586>;
+      var size : Nat__1040412405
+    };
+  stable roleMap :
+    {
+      var root : Node__1000929467<UserId__158757552, AdminEntry__901396970>;
+      var size : Nat__1040412405
+    };
+  stable siteStatsState :
+    {
+      var conciergeSupport : Text;
+      var fiveStarReviews : Text;
+      var satisfiedClients : Text
+    };
+  stable sortOrdersState : {var orders : [(VehicleId__234076593, Nat)]};
+  stable tripPhotoStateRec : {var nextId : Nat};
+  stable tripPhotos :
+    {
+      var root : Node__1000929467<Text, List__560604548<TripPhoto__399012496>>;
+      var size : Nat__1040412405
+    };
+  stable users :
+    {
+      var root : Node__1000929467<UserId__158757552, UserProfile__1009003526>;
+      var size : Nat__1040412405
+    };
+  stable vehiclePhotoOverrides :
+    {
+      var root : Node__1000929467<VehicleId__234076593, Text>;
+      var size : Nat__1040412405
+    };
+  stable vehicleState : {var nextVehicleId : Nat};
+  stable vehicles :
+    {
+      var root : Node__1000929467<VehicleId__234076593, Vehicle__138210770>;
+      var size : Nat__1040412405
+    }
+};
